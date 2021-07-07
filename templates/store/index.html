@@ -1,0 +1,216 @@
+{% extends 'store/base.html' %}
+{% block body %}
+
+
+
+
+
+        <main class="main">
+
+
+            <div class="intro-slider-container mb-5">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+                    <div class="intro-slide" style="/static/background-image: url(assets/images/demos/demo-4/slider/slide-1.png);">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
+                                    <h1 class="intro-title">Beats by</h1>
+                                    <h1 class="intro-title">Dre Studio 3</h1><!-- End .intro-title -->
+
+                                    <div class="intro-price">
+                                        <sup class="intro-old-price">$349,95</sup>
+                                        <span class="text-third">
+                                            $279<sup>.99</sup>
+                                        </span>
+                                    </div><!-- End .intro-price -->
+
+                                    <a href="category.html" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .col-lg-11 offset-lg-1 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+
+                    <div class="intro-slide" style="background-image: url(/static/assets/images/demos/demo-4/slider/slide-2.png);">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                    <h1 class="intro-title">Apple iPad Pro <br>12.9 Inch, 64GB </h1><!-- End .intro-title -->
+
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            $999<sup>.99</sup>
+                                        </span>
+                                    </div><!-- End .intro-price -->
+
+                                    <a href="category.html" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .col-md-6 offset-md-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+                </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+                <span class="slider-loader"></span><!-- End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="container">
+                <h2 class="title text-center mb-4">Explore Popular Seller</h2><!-- End .title text-center -->
+                
+                <div class="cat-blocks-container">
+                    <div class="row">
+                        
+
+                    {% for seller in sellers %}
+                        <div class="col-6 col-sm-4 col-lg-2">
+                            <a href="{% url 'store:seller_product' pk=seller.pk %}" class="cat-block">
+                                <figure>
+                                    <span>
+                                        <img src="{{seller.profile.image.url}}" style="width:100px;" alt="Category image">
+                                    </span>
+                                </figure>
+
+                                <h3 class="cat-block-title">{{seller.profile.username}}</h3><!-- End .cat-block-title -->
+                            </a>
+                        </div><!-- End .col-sm-4 col-lg-2 -->
+                    {% endfor %}
+
+
+
+                    </div><!-- End .row -->
+                </div><!-- End .cat-blocks-container -->
+            </div><!-- End .container -->
+
+
+
+
+
+            <div class="mb-4"></div><!-- End .mb-4 -->
+
+
+
+
+
+
+            <div class="mb-5"></div><!-- End .mb-5 -->
+
+            <div class="container for-you">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">New Products</h2><!-- End .title -->
+                    </div><!-- End .heading-left -->
+
+                   <div class="heading-right">
+                        <a href="#" class="title-link">View All Recommendadion <i class="icon-long-arrow-right"></i></a>
+                   </div><!-- End .heading-right -->
+                </div><!-- End .heading -->
+
+
+
+                <div class="products">
+                    <div class="row justify-content-center">
+                        
+
+                        
+                        
+                    {% for product in products %}
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="product product-2">
+                                <figure class="product-media">
+                                    <span class="product-label label-circle label-top">Top</span>
+                                    <a href="{{product.get_absolute_url}}">
+                                        <img src="{{product.image.url}}" alt="Product image" class="product-image">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                    </div><!-- End .product-action -->
+
+                                    <div class="product-action">
+                                        <a href="{% url 'order:add-to-cart' pk=product.pk %}" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                        <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                    </div><!-- End .product-action -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat">
+                                        <a href="#">{{product.user.email}}</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title"><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        <span class="new-price">${{product.price}}</span>
+                                        <span class="old-price">Was ${{product.old_price}}</span>
+                                    </div><!-- End .product-price -->
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 40%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <span class="ratings-text">( 4 Reviews )</span>
+                                    </div><!-- End .rating-container -->
+
+                                    <div class="product-nav product-nav-dots">
+                                        <a href="#" class="active" style="background: #666666;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #ff887f;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #6699cc;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #f3dbc1;"><span class="sr-only">Color name</span></a>
+                                        <a href="#" style="background: #eaeaec;"><span class="sr-only">Color name</span></a>
+                                    </div><!-- End .product-nav -->
+                                </div><!-- End .product-body -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                    {% endfor %}
+
+
+
+
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- End .container -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {% endblock %}

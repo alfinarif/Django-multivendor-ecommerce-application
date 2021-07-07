@@ -1,0 +1,39 @@
+﻿{% extends 'customer/base.html' %}
+{% block body %}
+
+				<div class="span9">
+					<div class="content">
+
+						<div class="module">
+							<div class="module-head">
+								<h3>Forms</h3>
+							</div>
+
+
+							<div class="module-body">
+								<form method='post' action='' enctype='multipart/form-data'>
+									{% csrf_token %}
+									{% if user_categories %}
+										<label for="cars">Parent:</label>
+										<select name="category">
+											<option value=''>Select Parent Category</option>
+										{% for user_category in user_categories %}
+											<option value="{{user_category.id}}">{{user_category.name}}</option>
+										{% endfor %}
+										</select>
+									{% endif %}
+									{{ form.as_p }}
+									<br>
+									<br>
+									<input type='submit' value='Add new category'>
+								</form>
+							</div>
+						</div>
+
+						
+						
+					</div><!--/.content-->
+				</div><!--/.span9-->
+
+
+			{% endblock body %}

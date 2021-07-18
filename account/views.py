@@ -155,3 +155,9 @@ class BecomeSellerView(View):
 #     return redirect('account:dashboard')
 
 
+
+
+
+
+
+

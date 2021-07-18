@@ -5,10 +5,12 @@ from django.urls import resolve
 from account.models import User
 from store.forms import CategoryForm, ProductForm
 from store.models import Product, Category
-from order.models import Cart
 
 from django.views.generic import View, ListView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+import xlwt
+from django.http import HttpResponse
 
 
 class AddNewProductView(LoginRequiredMixin, View):
@@ -187,3 +189,34 @@ class SellerProductView(TemplateView):
         }
         return render(request, 'store/seller_product.html', context)
 
+
+# export seller product as excel file
+def export_seller_products(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="products.xls"'
+    
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Seller Products') # this will make a sheet named Users Data
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['User', 'Product Name', 'Category', 'Price', 'Is Stock' ]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    rows = Product.objects.filter(user=request.user).values_list('user__email', 'name', 'category__name', 'price', 'is_stock')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+
+    return response

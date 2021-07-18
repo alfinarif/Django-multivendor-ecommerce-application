@@ -20,7 +20,7 @@
                             }
                         }
                     }'>
-                    <div class="intro-slide" style="/static/background-image: url(assets/images/demos/demo-4/slider/slide-1.png);">
+                    <div class="intro-slide" style="/static/background-image: url(/static/assets/images/demos/demo-4/slider/slide-1.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -95,7 +95,9 @@
                             <a href="{% url 'store:seller_product' pk=seller.pk %}" class="cat-block">
                                 <figure>
                                     <span>
-                                        <img src="{{seller.profile.image.url}}" style="width:100px;" alt="Category image">
+                                        {% if seller.profile.image %}
+                                            <img src="{{seller.profile.image.url}}" style="width:100px;" alt="Category image">
+                                        {% endif %}
                                     </span>
                                 </figure>
 
@@ -149,7 +151,9 @@
                                 <figure class="product-media">
                                     <span class="product-label label-circle label-top">Top</span>
                                     <a href="{{product.get_absolute_url}}">
-                                        <img src="{{product.image.url}}" alt="Product image" class="product-image">
+                                        {% if product.image %}
+                                            <img src="{{product.image.url}}" alt="Product image" class="product-image">
+                                        {% endif %}
                                     </a>
 
                                     <div class="product-action-vertical">

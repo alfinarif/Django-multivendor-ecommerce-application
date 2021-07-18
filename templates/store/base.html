@@ -69,8 +69,8 @@
                             <i class="icon-bars"></i>
                         </button>
                         
-                        <a href="index.html" class="logo">
-                            <img src="/static/assets/images/demos/demo-4/logo.png" alt="Molla Logo" width="105" height="25">
+                        <a href="{% url 'store:index' %}" class="logo">
+                            <img src="/static/assets/images/demos/demo-4/logo.png" alt="AppLogo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
@@ -137,7 +137,9 @@
 
                                         <figure class="product-image-container">
                                             <a href="product.html" class="product-image">
-                                                <img src="{{cart_product.item.image.url}}" alt="product">
+                                                {% if cart_product.item.image %}
+                                                    <img src="{{cart_product.item.image.url}}" alt="product">
+                                                {% endif %}
                                             </a>
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
@@ -313,7 +315,7 @@
 	        	<div class="container">
 	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
 	        		<figure class="footer-payments">
-	        			<img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+	        			<img src="/static/assets/images/payments.png" alt="Payment methods" width="272" height="20">
 	        		</figure><!-- End .footer-payments -->
 	        	</div><!-- End .container -->
 	        </div><!-- End .footer-bottom -->

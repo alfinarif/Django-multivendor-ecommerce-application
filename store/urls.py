@@ -13,4 +13,5 @@ urlpatterns = [
     path('product/seller/<int:pk>/', views.SellerProductView.as_view(), name='seller_product'),
     #export seller product route
     path('account/seller/products/export/', views.export_seller_products, name='export_seller_product'),
+    
 ]

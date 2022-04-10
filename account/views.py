@@ -1,16 +1,23 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from account.forms import CreateAnAccountForm, ProfileInfoForm, BecomeSellerForm
 
-from account.models import User
+from account.models import User, Profile
 from order.models import Cart
-from store.models import Category
+from store.models import Category, Product
 
 from django.views.generic import View, TemplateView
 
 from django.contrib import messages
 
 from django.contrib.auth import login, authenticate
+
+# create qr code 
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
 
 
 # anyone can create account from this class view
@@ -99,7 +106,10 @@ class SellerProfileView(View):
                     else:
                         total += float(cart.get_total())
 
+                seller_qr = request.user.profile.qr_code
+                
                 context = {
+                    'qr_code': seller_qr,
                     'total_sales_amount': total
                 }
                 return render(request, 'customer/index.html', context)
@@ -144,7 +154,6 @@ class BecomeSellerView(View):
                     return redirect('account:customer_profile')
         else:
             return redirect('account:login')
-
 
 
 

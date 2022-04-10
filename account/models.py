@@ -1,10 +1,19 @@
 from django.db import models
 
+
 # import class for change permission of user
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+# create qr code 
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
+from django.urls import reverse
 
 
 class CustomerManager(BaseUserManager):
@@ -62,7 +71,8 @@ class Profile(models.Model):
     zipcode = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.CharField(max_length=16, blank=True, null=True)
     image = models.ImageField(upload_to='profile-images')
-
+    qr_code = models.ImageField(upload_to='seller-qrcode', blank=True, null=True)
+  
     def __str__(self):
         return f"{self.user.email}'s profile"
     
@@ -73,16 +83,29 @@ class Profile(models.Model):
             if value is None or value=='':
                 return False
         return True
+    
+    def save(self, *args, **kwargs):
+        data = reverse('store:seller_product', kwargs={'pk' : self.user.id})
+        qrcode_image = qrcode.make('http://127.0.0.1:8000' + data)
+        canvas = Image.new('RGB', (410, 410), 'white')
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_image)
+        fname = f"qr_code_{self.user.email}.png"
+        buffer = BytesIO()
+        canvas.save(buffer, 'PNG')
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kwargs)
 
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+    @receiver(post_save, sender=User)
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
 
 
-@receiver(post_save, sender=User)
-def save_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    @receiver(post_save, sender=User)
+    def save_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
 
 
@@ -100,8 +123,6 @@ class BecomeSeller(models.Model):
 
     def __str__(self) -> str:
         return self.full_name
-
-
 
 
 
